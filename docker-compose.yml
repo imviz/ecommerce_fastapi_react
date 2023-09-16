@@ -1,0 +1,61 @@
+version: "3"
+
+services:
+  # nginx:
+  #   container_name: dsur-nginx
+  #   build:
+  #     context: .
+  #     dockerfile: nginx/Dockerfile
+  #     args:
+  #       MACHINE: ${PROJECT_DOMAIN?:Variable not set}
+  #       API_PREFIX: ${API_PREFIX?:Variable not set}
+  #       WS_PREFIX: ${WS_PREFIX?:Variable not set}
+  #       UI_PORT: ${UI_PORT:-80}
+  #   ports:
+  #     - "${UI_PORT:-80}:80"
+  #   depends_on:
+  #     - server
+
+  server:
+    container_name: ecommerce-server
+    build:
+      context: backend/server
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "${SERVER_PORT:-8000}:80"
+    volumes:
+      - ./backend/server/app:/app/app
+    #   - ./backend/server/alembic:/app/alembic
+    #   - ./backend/server/dsur_template.json:/app/dsur_template.json
+    #   - ./backend/server/csr_template.json:/app/csr_template.json
+    # command: /start-reload.sh
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    container_name: ecommerce-postgres
+    build:
+      context: postgres/
+      dockerfile: Dockerfile
+    # command:
+    #   - "postgres"
+    #   - "-c"
+    #   # - "shared_preload_libraries=pg_cron"
+    #   # - "-c"
+    #   # - "cron.database_name=${POSTGRES_DB}"
+    environment:
+        - POSTGRES_USER
+        - POSTGRES_PASSWORD
+        - POSTGRES_SERVER
+        - POSTGRES_DB
+        - PGDATA=/data/context
+    volumes:
+        - ./tmp/app-db-data:/data/context
+    ports:
+        - "5432:5432"
+    restart: unless-stopped
+
+ 
