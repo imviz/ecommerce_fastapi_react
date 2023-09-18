@@ -1,0 +1,94 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+    - repo: https://github.com/pre-commit/pre-commit-hooks
+      rev: v4.1.0
+      hooks:
+          - id: check-added-large-files
+            args: [--maxkb=1000]
+          - id: check-json
+            # exclude: '^frontend/|^deployment/|^frontend/|^monitoring/'
+          - id: check-merge-conflict
+          - id: check-yaml
+            args: [--allow-multiple-documents]
+          - id: debug-statements
+          - id: detect-private-key
+          - id: end-of-file-fixer
+            # exclude: '^frontend/|^deployment/|^frontend/|^monitoring/'
+          - id: mixed-line-ending
+          # - id: no-commit-to-branch
+          #   args: [--branch, main]
+          - id: trailing-whitespace
+            # exclude: '^frontend/|^deployment/|^frontend/|^monitoring/'
+    - repo: https://github.com/psf/black
+      rev: 22.3.0
+      hooks:
+          - id: black
+            files: '^backend/'
+            types: [python]
+            entry: 'black --exclude="experiments/|app2/|app_old/" backend'
+    # - repo: https://github.com/pre-commit/mirrors-mypy
+    #   rev: v0.942
+    #   hooks:
+    #       - id: mypy
+    #         name: mypy server
+    #         pass_filenames: false
+    #         additional_dependencies: [types-requests, types-redis, types-PyYAML]
+    #         files: '^backend/server/app'
+    #         types: [python]
+    #         entry: bash -c 'cd backend/server && mypy --config-file ./pyproject.toml -p app "$@"'
+          # - id: mypy
+          #   name: mypy merge_worker
+          #   pass_filenames: false
+          #   additional_dependencies: [types-requests, types-redis, types-PyYAML]
+          #   files: '^backend/workers'
+          #   types: [python]
+          #   entry: bash -c ''cd backend/server && mypy --config-file ../../pyproject.toml -p app "$@"'
+          # - id: mypy
+          #   name: mypy sync_worker
+          #   pass_filenames: false
+          #   additional_dependencies: [types-requests, types-redis, types-PyYAML]
+          #   files: '^backend/workers'
+          #   types: [python]
+          #   entry: bash -c ''cd backend/server && mypy --config-file ../../pyproject.toml -p app "$@"'
+          # - id: mypy
+          #   name: mypy parse_worker
+          #   pass_filenames: false
+          #   additional_dependencies: [types-requests, types-redis, types-PyYAML]
+          #   files: '^backend/workers'
+          #   types: [python]
+            # entry: bash -c 'cd backend/workers/parse_worker && mypy --config-file ../../pyproject.toml -p app "$@"'
+    - repo: https://github.com/pycqa/isort
+      rev: 5.12.0
+      hooks:
+          - id: isort
+            name: Isort
+            pass_filenames: false
+            files: '^backend/server/app'
+            types: [python]
+            entry: bash -c "cd backend/server && isort ."
+    - repo: https://github.com/myint/autoflake
+      rev: v1.4
+      hooks:
+          - id: autoflake
+            language: python
+            files: '^backend/server/app'
+            types: [python]
+            require_serial: true
+            args:
+                # TODO: move to pyproject.toml
+                # Track issue: https://github.com/myint/autoflake/issues/59
+                - --expand-star-imports
+                - --in-place
+                - --recursive
+                - --remove-all-unused-imports
+                - --remove-unused-variables
+    - repo: https://github.com/jendrikseipp/vulture
+      rev: 'v2.3'
+      hooks:
+          - id: vulture
+            name: Vulture
+            files: '^backend/server/app'
+            types: [python]
+            # vulture does not take config file from a different path
+            entry: bash -c 'vulture backend/server --exclude "*app2/*.py,*app_old/*.py,*app/*.py" --min-confidence 70'
