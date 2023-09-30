@@ -1,0 +1,22 @@
+[tool.mypy]
+python_version = 3.8
+# https://mypy.readthedocs.io/en/stable/config_file.html
+ignore_missing_imports = true
+implicit_reexport = true
+warn_redundant_casts = true
+warn_unreachable = true
+warn_unused_ignores = true
+
+
+[tool.isort]
+# https://pycqa.github.io/isort/docs/configuration/options.html
+combine_as_imports = true
+combine_star = true
+combine_straight_imports = true
+float_to_top = true
+line_length = 88  # black's line-length
+multi_line_output = 3
+profile = "black"
+remove_redundant_aliases = true
+known_first_party = ["app", "tests", "data_synchronizer", "document_generator"]
+skip = [".gitignore", ".dockerignore", "server/alembic/env.py", "server/app2", "server/app_old"]
