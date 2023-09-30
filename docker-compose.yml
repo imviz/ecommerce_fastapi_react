@@ -52,8 +52,8 @@ services:
         - POSTGRES_SERVER
         - POSTGRES_DB
         # - PGDATA=/data/context
-    volumes:
-        - ./tmp/app-db-data:/data/context
+    # volumes:
+    #     - ./tmp/app-db-data:/data/context
     ports:
         - "5432:5432"
     restart: unless-stopped
