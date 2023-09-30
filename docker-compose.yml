@@ -17,7 +17,7 @@ services:
   #     - server
 
   server:
-    container_name: ecommerce-server
+    container_name: social-media-server
     build:
       context: backend/server
       dockerfile: Dockerfile
@@ -36,7 +36,7 @@ services:
     restart: unless-stopped
 
   postgres:
-    container_name: ecommerce-postgres
+    container_name: social-media-postgres
     build:
       context: postgres/
       dockerfile: Dockerfile
@@ -51,11 +51,9 @@ services:
         - POSTGRES_PASSWORD
         - POSTGRES_SERVER
         - POSTGRES_DB
-        - PGDATA=/data/context
+        # - PGDATA=/data/context
     volumes:
         - ./tmp/app-db-data:/data/context
     ports:
         - "5432:5432"
     restart: unless-stopped
-
- 
