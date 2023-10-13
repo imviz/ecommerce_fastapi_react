@@ -83,12 +83,12 @@ repos:
                 - --recursive
                 - --remove-all-unused-imports
                 - --remove-unused-variables
-    - repo: https://github.com/jendrikseipp/vulture
-      rev: 'v2.3'
-      hooks:
-          - id: vulture
-            name: Vulture
-            files: '^backend/server/app'
-            types: [python]
-            # vulture does not take config file from a different path
-            entry: bash -c 'vulture backend/server --exclude "*app2/*.py,*app_old/*.py,*app/*.py" --min-confidence 70'
+    # - repo: https://github.com/jendrikseipp/vulture
+    #   rev: 'v2.3'
+    #   hooks:
+    #       - id: vulture
+    #         name: Vulture
+    #         files: '^backend/server/app'
+    #         types: [python]
+    #         # vulture does not take config file from a different path
+    #         entry: bash -c 'vulture backend/server --exclude "*app2/*.py,*app_old/*.py,*app/*.py" --min-confidence 70'

@@ -15,25 +15,40 @@ services:
   #     - "${UI_PORT:-80}:80"
   #   depends_on:
   #     - server
-
   server:
-    container_name: social-media-server
+    container_name: social_media_server
     build:
-      context: backend/server
-      dockerfile: Dockerfile
+      context: ./backend
+      dockerfile: ./server/Dockerfile
     env_file:
       - .env
-    ports:
-      - "${SERVER_PORT:-8000}:80"
     volumes:
       - ./backend/server/app:/app/app
+      - ./backend/server/alembic:/app/alembic
+    ports:
+        - "${SERVER_PORT:-8000}:80"
+    command: /start-reload.sh
+    depends_on:
+      - "postgres"
+    restart: unless-stopped
+  # server:
+  #   container_name: social-media-server
+  #   build:
+  #     context: backend/server
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - "${SERVER_PORT:-8000}:80"
+  #   volumes:
+  #     - ./backend/server/app:/app/app
     #   - ./backend/server/alembic:/app/alembic
     #   - ./backend/server/dsur_template.json:/app/dsur_template.json
     #   - ./backend/server/csr_template.json:/app/csr_template.json
     # command: /start-reload.sh
-    depends_on:
-      - postgres
-    restart: unless-stopped
+    # depends_on:
+    #   - postgres
+    # restart: unless-stopped
 
   postgres:
     container_name: social-media-postgres

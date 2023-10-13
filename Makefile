@@ -1,2 +1,2 @@
-run:
+start:
 	docker compose up --build
