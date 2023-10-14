@@ -41,7 +41,6 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         """
         self.model = model
 
-        # TODO remove with issue PT-362
         self.fields_for_name_encoding = [
             column.name
             for column in self.model.__table__.columns

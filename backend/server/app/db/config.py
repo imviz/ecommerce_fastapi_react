@@ -1,23 +1,20 @@
 from typing import Any, Dict, List, Optional, Union
 
-from pydantic import (  # BaseSettings,
+from pydantic import (
     AnyHttpUrl,
+    BaseSettings,
     PostgresDsn,
     SecretStr,
     root_validator,
     validator,
 )
-from pydantic_settings import BaseSettings
+
+# from pydantic_settings import BaseSettings
 
 DictStrAny = Dict[str, Any]
 
 
 class Settings(BaseSettings):
-
-    # --- Project --- #
-
-    PROJECT_DOMAIN: str = "localhost"
-    CLIENT_NAME: str = "dsur"
 
     # --- server --- #
 
@@ -60,7 +57,7 @@ class Settings(BaseSettings):
         if not values.get("SQLALCHEMY_DATABASE_URL"):
             value = PostgresDsn.build(
                 scheme="postgresql",
-                # user=values.get("POSTGRES_USER"),
+                user=values.get("POSTGRES_USER"),
                 password=values.get("POSTGRES_PASSWORD"),
                 host=values.get("POSTGRES_SERVER"),
                 path=f"/{values.get('POSTGRES_DB')}",
