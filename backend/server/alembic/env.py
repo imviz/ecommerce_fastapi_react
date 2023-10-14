@@ -1,13 +1,13 @@
 from logging.config import fileConfig
 
 from alembic import context
-from db.database import Base
+from sqlalchemy import engine_from_config, pool
+
+from app.db.database import Base
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from models.otp import Otp
-from models.user import User
-from sqlalchemy import engine_from_config, pool
+from app.models import otp, user
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

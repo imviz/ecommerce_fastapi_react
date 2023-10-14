@@ -1,7 +1,8 @@
 from datetime import datetime
 
 import sqlalchemy as sa
-from db.database import Base
+
+from app.db.database import Base
 
 
 class Otp(Base):
